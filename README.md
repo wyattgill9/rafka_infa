@@ -38,12 +38,6 @@ rakfa/
 │   │   ├── scale-all.sh              # Scale all services together
 │   │   └── monitor.sh                # Monitoring setup script
 │   │
-│   ├── terraform/                    # Infrastructure as code for cloud resources
-│   │   ├── cluster.tf                # Kubernetes cluster provisioning
-│   │   ├── networking.tf             # VPCs and networking setup
-│   │   ├── storage.tf                # Persistent storage provisioning
-│   │   └── scaling.tf                # Cloud autoscaler configurations
-│   │
 │   └── README.md                     # Infrastructure documentation
 
 ```
