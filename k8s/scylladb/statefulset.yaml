@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: scylladb
+  namespace: rakfa-test
+spec:
+  serviceName: "scylladb"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scylladb
+  template:
+    metadata:
+      labels:
+        app: scylladb
+    spec:
+      containers:
+      - name: scylladb
+        image: scylladb/scylla:latest
+        ports:
+        - containerPort: 9042

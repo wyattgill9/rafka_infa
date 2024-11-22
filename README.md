@@ -1,49 +1,62 @@
-# Kubernetes Infrastructure
-This folder contains Kubernetes (`k8s`) manifests for deploying ScyllaDB, Redis, and Etcd.
+# Infrastructure
+This folder contains Kubernetes (`k8s`) manifests for deploying ScyllaDB, Redis, and Etcd, aswell as scripts for automatic cluster scaling and deployment.
 
+## Folder Structure
 
-```
-rakfa/
-├── infrastructure/
-│   ├── k8s/                          # Kubernetes manifests
-│   │   ├── deployments/              # All tightly coupled services
-│   │   │   ├── scylladb.yaml         # ScyllaDB StatefulSet with scaling configs
-│   │   │   ├── redis.yaml            # Redis StatefulSet with scaling configs
-│   │   │   ├── etcd.yaml             # Etcd StatefulSet with scaling configs
-│   │   │   ├── raft.yaml             # Deployment for Raft-based logic
-│   │   │   └── rafka.yaml            # Core Rafka service deployment
-│   │   ├── common/                   # Shared resources (e.g., RBAC, storage classes)
-│   │   │   ├── namespace.yaml        # Namespace for all services
-│   │   │   ├── storage.yaml          # Persistent storage configs (PVC, StorageClass)
-│   │   │   └── rbac.yaml             # Role-based access control
-│   │   └── scaling.yaml              # Horizontal Pod Autoscaler and Cluster Autoscaler configs
-│   │
-│   ├── configs/                      # Centralized configuration files
-│   │   ├── scylladb.conf             # ScyllaDB config
-│   │   ├── redis.conf                # Redis config
-│   │   ├── etcd.conf                 # Etcd config
-│   │   ├── raft.toml                 # Raft-specific configs
-│   │   └── scaling.json              # Unified scaling parameters
-│   │
-│   ├── monitoring/                   # Monitoring setup (Prometheus/Grafana)
-│   │   ├── prometheus.yaml           # Prometheus config for all components
-│   │   ├── grafana-dashboards/       # Grafana dashboard definitions
-│   │   │   ├── scylladb.json
-│   │   │   ├── redis.json
-│   │   │   └── etcd.json
-│   │   └── alerts.yaml               # AlertManager configuration
-│   │
-│   ├── scripts/                      # Automation scripts
-│   │   ├── deploy-all.sh             # Deploy all services together
-│   │   ├── scale-all.sh              # Scale all services together
-│   │   └── monitor.sh                # Monitoring setup script
-│   │
-│   ├── terraform/                    # Infrastructure as code for cloud resources
-│   │   ├── cluster.tf                # Kubernetes cluster provisioning
-│   │   ├── networking.tf             # VPCs and networking setup
-│   │   ├── storage.tf                # Persistent storage provisioning
-│   │   └── scaling.tf                # Cloud autoscaler configurations
-│   │
-│   └── README.md                     # Infrastructure documentation
+(Note: Basic for now)
 
 ```
+infra/
+│
+├── k8s/                          # Kubernetes manifests
+│   ├── rafka/                     # Rafka service resources
+│   │   ├── deployment.yaml       # Rafka deployment manifest
+│   │   ├── service.yaml          # Rafka service manifest
+│   │   └── configmap.yaml        # Rafka config map
+│   ├── scylladb/                  # ScyllaDB service resources
+│   │   ├── statefulset.yaml      # ScyllaDB statefulset manifest
+│   │   ├── service.yaml          # ScyllaDB service manifest
+│   │   └── pvc.yaml              # ScyllaDB PVC manifest
+│   ├── etcd/                     # Etcd service resources
+│   │   ├── statefulset.yaml      # Etcd statefulset manifest
+│   │   ├── service.yaml          # Etcd service manifest
+│   ├── namespace.yaml            # Kubernetes namespace for all services
+├── configs/                      # Placeholder config files
+│   ├── scylladb.conf             # ScyllaDB config file
+│   ├── etcd.conf                 # Etcd config file
+│   ├── rafka.conf                # Rafka config file
+├── scripts/                      # Automation scripts
+│   ├── deploy-all.sh             # Deploys all services to Kubernetes
+├── .gitignore                    # Git ignore file
+├── setup-infra.sh                # Setup script for infrastructure (ignored by Git)
+└── README.md                     # Basic project documentation
+
+```
+
+## Build
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd rafka_infra/infra
+   ```
+
+2. Run the setup script to initialize the infrastructure:
+   ```bash
+   bash setup-infra.sh
+   ```
+
+3. Deploy the services using the `deploy-all.sh` script:
+   ```bash
+   ./scripts/deploy-all.sh
+   ```
+
+4. Check the Kubernetes services:
+   ```bash
+   kubectl get services -n rakfa-test
+   ```
+
+## Notes
+
+- The infrastructure is deployed to the `rakfa-test` namespace.
+- Configuration files are placeholders (Change later)
