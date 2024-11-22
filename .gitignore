@@ -1,7 +1,0 @@
-setup-infra.sh
-
-*.log
-*.env
-*.swp
-node_modules/
-*.db
