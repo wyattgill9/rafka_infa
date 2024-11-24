@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  selector:
+    app: my-app
+  ports:
+    - protocol: TCP
+      port: 80  # External port
+      targetPort: 80  # Internal port
+  type: LoadBalancer  # Or NodePort, depending on how you want to expose your service
