@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rafka-test-alpine
+  labels:
+    app: rafka-test-alpine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rafka-test-alpine
+  template:
+    metadata:
+      labels:
+        app: rafka-test-alpine
+    spec:
+      containers:
+      - name: rafka-test-alpine
+        image: wyattgill/rafka-test-alpine:latest   # Docker Hub image
+        ports:
+        - containerPort: 8080

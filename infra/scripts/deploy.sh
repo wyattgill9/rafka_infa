@@ -1,28 +1,39 @@
+# FUTURE
+
+# #!/bin/bash
+# set -euo pipefail
+
+# # Base Path
+# BASE_PATH="../k8s/base"
+
+# echo "Applying Kubernetes configurations for ScyllaDB and Rafka..."
+
+# # Apply Rafka Deployment and Service
+# echo "Applying Rafka Deployment and Service..."
+# kubectl apply -f "$BASE_PATH/rafka/deployment.yaml"
+# kubectl apply -f "$BASE_PATH/rafka/service.yaml"
+
+# # Wait for pods to be ready
+# echo "Waiting for all pods to be ready..."
+# kubectl wait --for=condition=ready pod --selector=app=rafka --timeout=300s
+
+# # Verify + Display status
+# echo "Checking Deployment and Pod status..."
+# kubectl get deployments -l app=rafka
+# kubectl get pods -l app=rafka
+
+# echo "All pods are ready. Rafka and Scylla systems are up and running!"
+
+
+
 #!/bin/bash
 set -e
 
+# Base Path
+BASE_PATH="../k8s/base"
 
-# FOR FUTURE WAIT
-
-# # Deploy etcd
-# kubectl apply -f kubernetes/etcd/manifests/etcd-deployment.yaml
-# kubectl apply -f kubernetes/etcd/config/etcd-config.yaml
-
-# # Deploy SyllaDB
-# kubectl apply -f kubernetes/sylladb/manifests/sylladb-deployment.yaml
-# kubectl apply -f kubernetes/sylladb/config/sylladb-config.yaml
-
-# # Deploy Rafka
-# kubectl apply -f kubernetes/rafka/manifests/rafka-deployment.yaml
-# kubectl apply -f kubernetes/rafka/config/rafka-config.yaml
-
-# # Deploy monitoring stack
-# kubectl apply -f monitoring/prometheus/prometheus-deployment.yaml
-# kubectl apply -f monitoring/grafana/grafana-deployment.yaml
-# kubectl apply -f monitoring/alertmanager/alertmanager-deployment.yaml
-
-kubectl apply -f ../kubernetes/deployment.yaml
-kubectl apply -f ../kubernetes/service.yaml
+kubectl apply -f "$BASE_PATH/rafka/deployment.yaml"
+kubectl apply -f "$BASE_PATH/rafka/service.yaml"
 
 echo "Deployment completed successfully!"
 

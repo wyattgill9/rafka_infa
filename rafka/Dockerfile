@@ -1,26 +1,31 @@
-# Build stage (just so yall understand im gonna slap the comments on rq)
-FROM nixos/nix AS builder
+# Stage 1: Build the application using a Rust image
+FROM rust:1.82-alpine as builder
 
-# Set working directory inside the builder container
+# Install necessary dependencies for building the application
+RUN apk add --no-cache musl-dev
+
+# Set the working directory
 WORKDIR /usr/src/rafka
 
 # Copy the project files into the container
 COPY . .
 
-# Install Rust, Cargo, and GCC
-RUN nix-env -iA nixpkgs.rustc nixpkgs.cargo nixpkgs.gcc
+# Configure Cargo to statically link the binary
+RUN cargo build --release --target x86_64-unknown-linux-musl
 
-# Build the project in release mode
-RUN cargo build --release
+# Stage 2: Create the minimal runtime image using Alpine
+FROM alpine:latest
 
-# Final stage: Use a minimal NixOS image as base
-FROM nixos/nix
+# Install musl (needed for static linking) and SSL libraries (libssl3 instead of libssl1.1)
+RUN apk add --no-cache \
+    libssl3 \
+    ca-certificates
 
-# Copy the built application from the builder stage
-COPY --from=builder /usr/src/rafka/target/release/rafka /usr/local/bin/rafka
+# Copy the statically linked binary from the builder stage
+COPY --from=builder /usr/src/rafka/target/x86_64-unknown-linux-musl/release/rafka /usr/local/bin/rafka
 
 # Expose the application port
 EXPOSE 8080
 
 # Start the application
-CMD ["rafka"]
+CMD ["/usr/local/bin/rafka"]
