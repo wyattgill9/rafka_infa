@@ -1,4 +1,3 @@
-// client.rs
 use tonic::transport::Channel;
 use rafka::rafka_client::RafkaClient;
 use rafka::{CreateNodeRequest, ProduceEventRequest, RemoveNodeRequest, DemandEventRequest};
