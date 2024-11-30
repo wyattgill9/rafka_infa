@@ -7,11 +7,6 @@ infra/
 ├── k8s/
 │   ├── base/                      # Base manifests for shared configurations
 │   │   ├── scylla/                # ScyllaDB manifests
-│   │   │   ├── statefulset.yaml
-│   │   │   ├── service.yaml
-│   │   │   ├── storageclass.yaml  # Optional if using custom storage classes
-│   │   │   ├── configmap.yaml     # Optional ScyllaDB configs (e.g., cassandra.yaml)
-│   │   │   └── secrets.yaml       # Secrets (API keys, passwords)
 │   │   ├── rafka/                 # Rafka-specific infra manifests
 │
 │   ├── overlays/                  # Environment-specific configurations (blank)
@@ -30,47 +25,39 @@ infra/
 
 ## Diagram of what it does 
 ```
-                    +----------------------------+
-                    |     Kubernetes Cluster     |
-                    +----------------------------+
-                             |
-          +-----------------------------------------------+
-          |                                               |
-  +----------------------+                        +----------------------+
-  |    Rafka Pods        |                        |    Scylla Pods       |
-  |  (Horizontal Scale)  |                        |  (Horizontal Scale)  |
-  |                      |                        |                      |
-  |   +-------------+    |                        |   +-------------+    |
-  |   |  rafka-0   |    |                        |   |  scylla-0  |    |
-  |   +-------------+    |                        |   +-------------+    |
-  |   +-------------+    |                        |   |  scylla-1  |    |
-  |   |  rafka-1   |    |                        |   +-------------+    |
-  |   +-------------+    |                        |   +-------------+    |
-  |   +-------------+    |                        |   |  scylla-2  |    |
-  |   |  rafka-2   |    |                        |   +-------------+    |
-  |   +-------------+    |                        |                      |
-  +----------------------+                        +----------------------+
-          |                                               |
-          +-----------------------------------------------+
-                             |
-                +----------------------------+
-                |      Rafka Service (LB)    |
-                |     (Horizontal Scale)     |
-                +----------------------------+
-                             |
-                 +--------------------------+
-                 |    External Clients      |
-                 +--------------------------+
-                             |
-                +----------------------------+
-                |    Scylla Service (Cluster)|
-                |     (Cluster IP)           |
-                +----------------------------+
-                             |
-        +-------------------------------------------+
-        |                                           |
-+----------------------++                +-----------------------+
-|   Scylla Cluster      |                |   Scylla Cluster      |
-| (Replicated, sharded) |                | (Replicated, sharded) |
-+-----------------------+                +-----------------------+
++----------------------------+
+|      Kubernetes Cluster     |
++----------------------------+
+             |
+ +-------------------------------+
+ |                               |
+ |  +---------------------+      +----------------------+
+ |  |    Rafka Pods       |      |     Skytable Cluster  |
+ |  |  (Horizontal Scale) |      |   (Horizontal Scale)  |
+ |  |                     |      |                       |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  |  |  rafka-0   |    |      |   |  skytable-0 |     |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  |  |  rafka-1   |    |      |   |  skytable-1 |     |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  |  |  rafka-2   |    |      |   |  skytable-2 |     |
+ |  |  +-------------+    |      |   +-------------+     |
+ |  +---------------------+      +----------------------+
+             |
+   +-------------------------------+
+   |    Rafka Service (LB)         |
+   |  (Load Balancer for Consumers) |
+   +-------------------------------+
+             |
+   +----------------------------+
+   |   External Consumers       |
+   +----------------------------+
+             |
+   +-------------------------------+
+   |   ScyllaDB Cluster (Replicated)|
+   |    (Cold Storage/Long-term)    |
+   +-------------------------------+
+
 ```

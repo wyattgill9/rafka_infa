@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scylla-operator
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scylla-operator
+  template:
+    metadata:
+      labels:
+        app: scylla-operator
+    spec:
+      containers:
+        - name: scylla-operator
+          image: scylladb/scylla-operator:latest
+          ports:
+            - containerPort: 8080

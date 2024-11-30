@@ -1,0 +1,28 @@
+apiVersion: scylla.scylladb.com/v1
+kind: ScyllaCluster
+metadata:
+  name: scylla-cluster
+  namespace: default
+spec:
+  datacenter:
+    name: dc1
+    racks:
+      - name: rack1
+        members: 3                    # Number of initial nodes
+        resources:
+          requests:
+            cpu: 2
+            memory: 4Gi
+          limits:
+            cpu: 4
+            memory: 8Gi
+        storage:
+          capacity: 50Gi
+        volumeClaimTemplates:
+          - metadata:
+              name: data
+            spec:
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 50Gi

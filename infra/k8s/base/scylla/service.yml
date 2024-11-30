@@ -1,15 +1,16 @@
-apiVersion: apps/v1
+apiVersion: v1
 kind: Service
 metadata:
-  name: scylla
-  labels:
-    app: scylla
+  name: scylla-service
+  namespace: default
 spec:
+  clusterIP: None                  # Headless service
   ports:
-    - port: 9042
-      name: cql
-    - port: 9160
-      name: thrift
-  clusterIP: None # Headless service for StatefulSet
+    - name: cql
+      port: 9042                   # Cassandra Query Language (CQL) port
+      targetPort: 9042
+    - name: metrics
+      port: 9180                   # Scylla metrics for Prometheus
+      targetPort: 9180
   selector:
     app: scylla

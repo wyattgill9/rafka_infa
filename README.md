@@ -4,7 +4,6 @@ This folder contains Kubernetes (`k8s`) manifests for deploying ScyllaDB, Redis,
 ## Tasks:
 
 - #### Making this exectable!!
-- Setting up Minikube
 - Running the System
 
 Startup with:

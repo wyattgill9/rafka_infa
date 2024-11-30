@@ -1,9 +1,0 @@
-# apiVersion: apps/v1
-# kind: ConfigMap
-# metadata:
-#   name: scylla-config
-# data:
-#   cassandra.yaml: |
-#     # Add custom ScyllaDB configuration if necessary
-#     num_tokens: 256
-#     auto_bootstrap: true
