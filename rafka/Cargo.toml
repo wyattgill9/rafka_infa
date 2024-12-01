@@ -4,19 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-tonic = "0.8"
-prost = "0.10"
 tokio = { version = "1", features = ["full"] }
-futures = "0.3"
-
-[build-dependencies]
-tonic-build = "0.8"
-
-
-[[bin]]
-name = "client"
-path = "src/client.rs"
-
-[[bin]]
-name = "server"
-path = "src/server.rs"
