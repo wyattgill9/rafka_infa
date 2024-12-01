@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: skytable-config
+data:
+  skytable.conf: |
+    host = "0.0.0.0"
+    port = 2003
+    maxmem = "200mb"
+    persistence = false
+    max_connections = 1000
+    eviction_strategy = "lru-2"
+    compression = true
+    compression_level = "balanced"
+    tcp_keepalive = 15
+    tcp_backlog = 2048
+    max_request_size = "1mb"

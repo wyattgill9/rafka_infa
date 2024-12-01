@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: scylla-service
-  namespace: default
+  name: scylla-cluster
 spec:
-  clusterIP: None                  # Headless service
-  ports:
-    - name: cql
-      port: 9042                   # Cassandra Query Language (CQL) port
-      targetPort: 9042
-    - name: metrics
-      port: 9180                   # Scylla metrics for Prometheus
-      targetPort: 9180
+  clusterIP: None
   selector:
     app: scylla
+  ports:
+  - port: 9042
+    targetPort: 9042
+    name: cql
+  - port: 9180
+    targetPort: 9180
+    name: prometheus 

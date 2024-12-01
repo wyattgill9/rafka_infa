@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: scylla-operator
-  namespace: default
 spec:
   replicas: 1
   selector:
@@ -13,8 +12,14 @@ spec:
       labels:
         app: scylla-operator
     spec:
+      serviceAccountName: scylla-operator
       containers:
-        - name: scylla-operator
-          image: scylladb/scylla-operator:latest
-          ports:
-            - containerPort: 8080
+      - name: operator
+        image: scylladb/scylla-operator:latest
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi" 
